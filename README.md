@@ -76,7 +76,7 @@ You should see both the `AuthorList` and `AuthorDetail` on the screen at the sam
 `AuthorDetail` is filled with dummy data right now.  
 Let's make it so that clicking on an author changes the content.  
 
-1. Give the `App` component a new `state` property called `currentAuthor` that represents the currently selected author. Set its initial value to `null`.
+1. Give the `App` component a new `state` property called `currentAuthor` using `useState` that represents the currently selected author. Set its initial value to `null`.
 2. Give the `App` a new method `selectAuthor = author => { ... }`. This method takes an author object as a parameter and uses it to update `currentAuthor` on the state. We're going to use `selectAuthor` as an event handler.
 3. Pass the `selectAuthor` method to the `AuthorCard`. To do this you're going to have to pass the method as a prop two levels down:
     * From `App` to `AuthorList`
@@ -105,18 +105,16 @@ We want our users to be able to search through the authors in the list view:
 1. Create a new `SearchBar.js` file with the following component:
 
 ```javascript
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-class SearchBar extends Component {
-  state = { query: "" };
+const SearchBar = () => {
+  const [query,setQuery] = useState("")
 
   handleChange = event => {
-    this.setState({ query: event.target.value });
+    setQuery(event.target.value)
   }
-
-  render() {
     return (
       <div className="form-group col-lg-6 col-12 mx-auto">
         <div className="input-group my-3">
@@ -134,20 +132,18 @@ class SearchBar extends Component {
         </div>
       </div>
     );
-  }
 }
 
 export default SearchBar;
 ```
 
-Take some time to really understand what this component is doing. [This](https://reactjs.org/docs/forms.html#controlled-components) article might help.
 
-2. Import the `SearchBar` into the `AuthorList` and render it near the top of the page.
+1. Import the `SearchBar` into the `AuthorList` and render it near the top of the page.
 
-3. Add a `filterAuthors = query => { ... }` method to `App`. This method should filter the authors in `authors` based on the `query`.
+2. Add a `filterAuthors = query => { ... }` method to `App`. This method should filter the authors in `authors` based on the `query`.
 Things to think about:
     - You will need to have **two** arrays in the state. One for the **authors** and one for the **filtered authors**.
-    - How can you [filter](https://warehouse.joincoded.com/workshop/javascript-episode-iii/array-iteration-methods/filter/) an array based on some condition?
+    - How can you [filter](https://warehouse.joincoded.com/workshops/foundations/advanced/arrow-functions) an array based on some condition?
     - How do you know if a string [includes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes) another string?
     - How do you make the search case-**in**sensitive?
     
